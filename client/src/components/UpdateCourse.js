@@ -14,8 +14,9 @@ const UpdateCourse = (props) => {
     // Get credential and author information from context
     const context = useContext(Context);
     const { credential } = context;
-    const { firstName, lastName, userId } = context.authenticatedUser;
-
+    const { firstName, lastName } = context.authenticatedUser;
+    const userId = context.authenticatedUser.id;
+    
     // Get Course ID from path parameter
     const { id } = props.match.params;
     
