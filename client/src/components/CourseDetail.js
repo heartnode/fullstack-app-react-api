@@ -1,12 +1,14 @@
-import React, {useEffect,useState} from 'react';
+import React, {useEffect,useState, useContext} from 'react';
 import ReactMarkdown from 'react-markdown';
+import { Context } from '../Context';
 
 import Data from '../Data';
 const CourseDetail = (props) => {
 
+    const context = useContext(Context);
     const [course,setCourse] = useState({User:{}});
     const {id} = props.match.params;
-
+    console.log(context);
     useEffect(()=>{
         const data = new Data();
         data.getCourseDetail(id)
@@ -16,16 +18,34 @@ const CourseDetail = (props) => {
             })
     },[id]);
 
+    const deleteCourse = () => {
+        const data = new Data();
+        data.deleteCourse(id,context.credential)
+            .then((response) => {
+                if (response !== null) {
+                    props.history.replace('/');
+                } else {
+                    props.history.push('/forbidden');
+                }
+            })
+            .catch(() => {
+                props.history.push('/error');
+            });
+    };
+
     return(
         <main>
-            <div className="actions--bar">
-                <div className="wrap">
-                    <a className="button" href="update-course.html">Update Course</a>
-                    <a className="button" href="#delete">Delete Course</a>
-                    <a className="button button-secondary" href="/">Return to List</a>
-                </div>
-            </div>
-            
+            { (context.authenticatedUser !== null && context.authenticatedUser.id === course.userId) ?
+                <div className="actions--bar">
+                    <div className="wrap">
+                        <a className="button" href="update-course.html">Update Course</a>
+                        <button className="button" onClick={()=>deleteCourse()}>Delete Course</button>
+                        <a className="button button-secondary" href="/">Return to List</a>
+                    </div>
+                </div> 
+            :
+                <React.Fragment />
+            }
             <div className="wrap">
                 <h2>Course Detail</h2>
                 <form>

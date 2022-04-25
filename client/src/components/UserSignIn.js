@@ -4,22 +4,22 @@ import Form from './Form';
 
 export default class UserSignIn extends Component {
   state = {
-    username: '',
+    emailAddress: '',
     password: '',
     errors: [],
   }
 
   render() {
     const {
-      username,
+      emailAddress,
       password,
       errors,
     } = this.state;
 
     return (
-      <div className="bounds">
-        <div className="grid-33 centered signin">
-          <h1>Sign In</h1>
+      <main>
+      <div className="form--centered">
+          <h2>Sign In</h2>
           <Form 
             cancel={this.cancel}
             errors={errors}
@@ -27,13 +27,15 @@ export default class UserSignIn extends Component {
             submitButtonText="Sign In"
             elements={() => (
               <React.Fragment>
+                <label htmlFor="emailAddress">Email Address</label>
                 <input 
-                  id="username" 
-                  name="username" 
-                  type="text"
-                  value={username} 
+                  id="emailAddress" 
+                  name="emailAddress" 
+                  type="email"
+                  value={emailAddress} 
                   onChange={this.change} 
-                  placeholder="User Name" />
+                />
+                <label htmlFor="password">Password</label>
                 <input 
                   id="password" 
                   name="password"
@@ -43,11 +45,9 @@ export default class UserSignIn extends Component {
                   placeholder="Password" />                
               </React.Fragment>
             )} />
-          <p>
-            Don't have a user account? <Link to="/signup">Click here</Link> to sign up!
-          </p>
+          <p>Don't have a user account? Click here to <Link to="/signup">sign up</Link>!</p>
         </div>
-      </div>
+      </main>
     );
   }
 
@@ -63,17 +63,18 @@ export default class UserSignIn extends Component {
   }
 
   submit = () => {
+    const { from } = this.props.location.state || { from: {pathname: '/authenticated'}};
     const { context } = this.props;
-    const { username, password } = this.state;
-    context.actions.signIn(username, password)
+    const { emailAddress, password } = this.state;
+    context.actions.signIn(emailAddress, password)
       .then( user => {
         if (user === null){
           this.setState(()=>{
             return { errors: ['Sign-in was unsuccessful']};
           });
         }else {
-          this.props.history.push('/authenticated');
-          console.log(`SUCCESS ${username} is now signed in!`);
+          this.props.history.push(from);
+          console.log(`SUCCESS ${emailAddress} is now signed in!`);
         }
       })
       .catch( err => {

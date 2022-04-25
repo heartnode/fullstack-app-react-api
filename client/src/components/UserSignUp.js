@@ -4,24 +4,26 @@ import Form from './Form';
 
 export default class UserSignUp extends Component {
   state = {
-    name: '',
-    username: '',
+    firstName: '',
+    lastName: '',
+    emailAddress: '',
     password: '',
     errors: [],
   }
 
   render() {
     const {
-      name,
-      username,
+      firstName,
+      lastName,
+      emailAddress,
       password,
       errors,
     } = this.state;
 
     return (
-      <div className="bounds">
-        <div className="grid-33 centered signin">
-          <h1>Sign Up</h1>
+      <main>
+      <div className="form--centered">
+          <h2>Sign Up</h2>
           <Form 
             cancel={this.cancel}
             errors={errors}
@@ -29,20 +31,31 @@ export default class UserSignUp extends Component {
             submitButtonText="Sign Up"
             elements={() => (
               <React.Fragment>
+                <label htmlFor="firstName">First Name</label>
                 <input 
-                  id="name" 
-                  name="name" 
+                  id="firstName" 
+                  name="firstName" 
                   type="text"
-                  value={name} 
+                  value={firstName} 
                   onChange={this.change} 
-                  placeholder="Name" />
+                />
+                <label htmlFor="lastName">Last Name</label>
                 <input 
-                  id="username" 
-                  name="username" 
+                  id="lastName" 
+                  name="lastName" 
                   type="text"
-                  value={username} 
+                  value={lastName} 
                   onChange={this.change} 
-                  placeholder="User Name" />
+                />
+                <label htmlFor="emailAddress">Email Address</label>
+                <input 
+                  id="emailAddress" 
+                  name="emailAddress" 
+                  type="email"
+                  value={emailAddress} 
+                  onChange={this.change} 
+                />
+                <label htmlFor="password">Password</label>
                 <input 
                   id="password" 
                   name="password"
@@ -52,11 +65,9 @@ export default class UserSignUp extends Component {
                   placeholder="Password" />
               </React.Fragment>
             )} />
-          <p>
-            Already have a user account? <Link to="/signin">Click here</Link> to sign in!
-          </p>
+          <p>Already have a user account? Click here to <Link to="/signin">sign in</Link>!</p>
         </div>
-      </div>
+      </main>
     );
   }
 
@@ -73,14 +84,20 @@ export default class UserSignUp extends Component {
 
   submit = () => {
     const { context } = this.props;
-    const { name, username, password } = this.state;
-    const user = { name, username, password};
+    const { firstName, lastName, emailAddress, password } = this.state;
+    const user = { firstName, lastName, emailAddress, password};
     context.data.createUser(user)
       .then( errors => {
         if (errors.length){
           this.setState({errors});
         } else {
-          console.log(`${username} is successfully signed up and authenticated!`);
+      
+          context.actions.signIn(emailAddress, password)
+            .then(()=>{
+              this.props.history.push('/authenticated');
+            });
+            
+          console.log(`${emailAddress} is successfully signed up and authenticated!`);   
         }
       })
       .catch( err=>{
