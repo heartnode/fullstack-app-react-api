@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Form from './Form';
 
 export default class UserSignIn extends Component {
+  // Intialize emailAddress, password and error states.
   state = {
     emailAddress: '',
     password: '',
@@ -63,21 +64,27 @@ export default class UserSignIn extends Component {
   }
 
   submit = () => {
+    // EXCEED From referrer or set to index page
     const { from } = this.props.location.state || { from: {pathname: '/'}};
+    
+    // Calls signIn from context.action
     const { context } = this.props;
     const { emailAddress, password } = this.state;
     context.actions.signIn(emailAddress, password)
       .then( user => {
+        // If user not found sets error state with Sign-in unsuccess.
         if (user === null){
           this.setState(()=>{
             return { errors: ['Sign-in was unsuccessful']};
           });
         }else {
+          //EXCEED redirect the user to from
           this.props.history.push(from);
           console.log(`SUCCESS ${emailAddress} is now signed in!`);
         }
       })
       .catch( err => {
+        // For all other errors send to unhandled error page
         console.log(err);
         this.props.history.push('/error');
       });
@@ -85,6 +92,7 @@ export default class UserSignIn extends Component {
   }
 
   cancel = () => {
+    // On cancel send back to index page
     this.props.history.push('/')
   }
 }
