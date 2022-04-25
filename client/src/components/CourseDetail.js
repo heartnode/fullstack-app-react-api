@@ -13,16 +13,25 @@ const CourseDetail = (props) => {
     
     // Gets the Course ID from path parameters
     const {id} = props.match.params;
-    
+    const {history} = props;
     // Fetch the course detail from api server
     useEffect(()=>{
         const data = new Data();
         data.getCourseDetail(id)
             .then((course)=>{
+                // If course not found redirect to /notfound
+                if (course === null){
+                    history.push('/notfound');
+                    return;
+                }
                 // Update the course state
                 setCourse(course);
             })
-    },[id]);
+            .catch(()=>{
+                // Catches unhandled error from REST API
+                history.push('/error');
+            })
+    },[id,history]);
 
     // Delete course function
     const deleteCourse = () => {
