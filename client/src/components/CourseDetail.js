@@ -1,4 +1,6 @@
 import React, {useEffect,useState} from 'react';
+import ReactMarkdown from 'react-markdown';
+
 import Data from '../Data';
 const CourseDetail = (props) => {
 
@@ -20,7 +22,7 @@ const CourseDetail = (props) => {
                 <div className="wrap">
                     <a className="button" href="update-course.html">Update Course</a>
                     <a className="button" href="#delete">Delete Course</a>
-                    <a className="button button-secondary" href="index.html">Return to List</a>
+                    <a className="button button-secondary" href="/">Return to List</a>
                 </div>
             </div>
             
@@ -32,7 +34,7 @@ const CourseDetail = (props) => {
                             <h3 className="course--detail--title">Course</h3>
                             <h4 className="course--name">{course.title}</h4>
                             <p>By {course.User.firstName} {course.User.lastName}</p>
-                            <p>{course.description}</p>
+                            <ReactMarkdown>{course.description}</ReactMarkdown>
                         </div>
                         <div>
                             <h3 className="course--detail--title">Estimated Time</h3>
@@ -40,7 +42,7 @@ const CourseDetail = (props) => {
 
                             <h3 className="course--detail--title">Materials Needed</h3>
                             <ul className="course--detail--list">
-                                {course.materialsNeeded}
+                                <ReactMarkdown>{course.materialsNeeded}</ReactMarkdown>
                             </ul>
                         </div>
                     </div>
