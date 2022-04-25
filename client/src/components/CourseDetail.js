@@ -52,17 +52,22 @@ const CourseDetail = (props) => {
 
     return(
         <main>
-            { (context.authenticatedUser !== null && context.authenticatedUser.id === course.userId) ?
+            
                 <div className="actions--bar">
                     <div className="wrap">
-                        <button className="button" onClick={()=>updateCourse()}>Update Course</button>
-                        <button className="button" onClick={()=>deleteCourse()}>Delete Course</button>
+                    { 
+                        (context.authenticatedUser !== null && context.authenticatedUser.id === course.userId) ?
+                        <React.Fragment>
+                            <button className="button" onClick={()=>updateCourse()}>Update Course</button>
+                            <button className="button" onClick={()=>deleteCourse()}>Delete Course</button>
+                        </React.Fragment>
+                        :
+                        <React.Fragment />
+                    }
                         <a className="button button-secondary" href="/">Return to List</a>
                     </div>
                 </div> 
-            :
-                <React.Fragment />
-            }
+           
             <div className="wrap">
                 <h2>Course Detail</h2>
                 <form>
