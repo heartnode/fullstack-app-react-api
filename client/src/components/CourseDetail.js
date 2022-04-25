@@ -1,39 +1,52 @@
 import React, {useEffect,useState, useContext} from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Context } from '../Context';
-
 import Data from '../Data';
-const CourseDetail = (props) => {
 
+// Course Detail Component
+const CourseDetail = (props) => {
+    // Gets the Context 
     const context = useContext(Context);
+    
+    // course state and setter
     const [course,setCourse] = useState({User:{}});
+    
+    // Gets the Course ID from path parameters
     const {id} = props.match.params;
-    console.log(context);
+    
+    // Fetch the course detail from api server
     useEffect(()=>{
         const data = new Data();
         data.getCourseDetail(id)
             .then((course)=>{
-                console.log(course);
+                // Update the course state
                 setCourse(course);
             })
     },[id]);
 
+    // Delete course function
     const deleteCourse = () => {
         const data = new Data();
+        // Delete the course by Id and passing the credential from context
         data.deleteCourse(id,context.credential)
             .then((response) => {
+                // If response is success goes to the the / 
                 if (response !== null) {
                     props.history.replace('/');
                 } else {
+                    // If response failed then redirect to forbidden
                     props.history.push('/forbidden');
                 }
             })
             .catch(() => {
+                // Unhandled Error push to error 
                 props.history.push('/error');
             });
     };
 
+    // Handles on Update Course button click
     const updateCourse = () => {
+        // Redirect to /course/:id/update path
         props.history.push(`/courses/${id}/update`);
     }
 

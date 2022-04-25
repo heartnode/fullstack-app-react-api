@@ -26,11 +26,7 @@ export default class Data {
     const response = await this.api(`/courses`);
     if (response.status === 200) {
       return response.json();
-    }
-    else if (response.status === 401) {
-      return null;
-    }
-    else {
+    } else {
       throw new Error();
     }
   }

@@ -3,16 +3,23 @@ import Data from '../Data';
 import {Link} from 'react-router-dom';
 
 export default class Courses extends Component {
+  // Initialize courses state to empty array
   state = {
     courses:[],
   }
 
   componentDidMount(){
+    // Fetch the api after successful mount of the component
     const data = new Data();
-    data.getCourses().then((courses)=>{
-      console.log(courses);
-      this.setState({courses});
-    })
+    data.getCourses()
+      .then((courses)=>{
+        // Set the courses state
+        this.setState({courses});
+      })
+      .catch(()=> {
+        // If error occurs send to Unhandled Error
+        this.props.history.push('/error');
+      })
   }
   render() {
     return (
