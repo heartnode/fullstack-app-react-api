@@ -16,7 +16,9 @@ import Authenticated from './components/Authenticated';
 import CourseDetail from './components/CourseDetail';
 import Forbidden from './components/Forbidden';
 import UnhandledError from './components/UnhandledError';
-
+import CreateCourse from './components/CreateCourse';
+import PrivateRoute from './PrivateRoute';
+import UpdateCourse from './components/UpdateCourse';
 const UserSignUpWithContext = withContext(UserSignUp);
 const UserSignInWithContext = withContext(UserSignIn);
 const HeaderWithContext = withContext(Header);
@@ -28,9 +30,12 @@ const App = () => (
       <Switch>
         <Route exact path="/" component={Courses} />
         <Route path="/authenticated" component={Authenticated} />
+        <PrivateRoute path="/courses/create" component={CreateCourse} />
+        
         <Route path="/signin" component={UserSignInWithContext} />
         <Route path="/signup" component={UserSignUpWithContext} />
         <Route path="/signout" component={UserSignOutWithContext} />
+        <PrivateRoute path="/courses/:id/update" component={UpdateCourse} />
         <Route path="/courses/:id" component={CourseDetail} />
         <Route path="/forbidden" component={Forbidden} />
         <Route path="/error" component={UnhandledError} />

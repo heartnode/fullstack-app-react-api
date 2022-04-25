@@ -33,12 +33,16 @@ const CourseDetail = (props) => {
             });
     };
 
+    const updateCourse = () => {
+        props.history.push(`/courses/${id}/update`);
+    }
+
     return(
         <main>
             { (context.authenticatedUser !== null && context.authenticatedUser.id === course.userId) ?
                 <div className="actions--bar">
                     <div className="wrap">
-                        <a className="button" href="update-course.html">Update Course</a>
+                        <button className="button" onClick={()=>updateCourse()}>Update Course</button>
                         <button className="button" onClick={()=>deleteCourse()}>Delete Course</button>
                         <a className="button button-secondary" href="/">Return to List</a>
                     </div>

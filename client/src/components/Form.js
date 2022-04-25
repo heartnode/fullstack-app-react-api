@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default (props) => {
+const Form = (props) => {
   const {
     cancel,
     errors,
@@ -31,23 +31,23 @@ export default (props) => {
       </form>
     </div>
   );
-}
+};
 
 function ErrorsDisplay({ errors }) {
   let errorsDisplay = null;
 
   if (errors.length) {
     errorsDisplay = (
-      <div>
-        <h2 className="validation--errors--label">Validation errors</h2>
-        <div className="validation-errors">
-          <ul>
-            {errors.map((error, i) => <li key={i}>{error}</li>)}
-          </ul>
-        </div>
+      <div className="validation--errors">
+        <h3>Validation Errors</h3>
+        <ul>
+          {errors.map((error, i) => <li key={i}>{error}</li>)}
+        </ul>
       </div>
     );
   }
 
   return errorsDisplay;
 }
+
+export default Form;

@@ -19,6 +19,7 @@ export default class Data {
       const encodedCredentials = btoa(`${credentials.emailAddress}:${credentials.password}`);
       options.headers['Authorization'] = `Basic ${encodedCredentials}`;
     }
+
     return fetch(url, options);
   }
   async getCourses() {
@@ -60,6 +61,41 @@ export default class Data {
     }
   }
 
+  async updateCourse(id, course, credential=null) {
+    const response = await this.api(`/courses/${id}`, 'PUT', course,true,credential);
+    if (response.status === 204) {
+       return [];
+    }
+    else if (response.status === 400) {
+      return response.json().then(data => {
+        return data.errors;
+      });
+    }
+    else if (response.status === 403) {
+      throw new Error('FORBIDDEN');
+    }
+    else {
+      throw new Error();
+    }
+  }
+
+  async createCourse(course, credential=null) {
+    const response = await this.api('/courses', 'POST', course,true,credential);
+    if (response.status === 201) {
+      //console.log(response.headers.get('Location'))
+      //This can get the ID of the course but not part of the requirement so is omited.
+      return [];
+    }
+    else if (response.status === 400) {
+      return response.json().then(data => {
+        return data.errors;
+      });
+    }
+    else {
+      throw new Error();
+    }
+  }
+
   async getUser(emailAddress, password) {
     const response = await this.api(`/users`, 'GET', null, true, { emailAddress, password });
     if (response.status === 200) {
@@ -72,6 +108,7 @@ export default class Data {
       throw new Error();
     }
   }
+  
   
   async createUser(user) {
     const response = await this.api('/users', 'POST', user);
