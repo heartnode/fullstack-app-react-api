@@ -18,7 +18,8 @@ router.post("/", authenticateUser, asyncHandler(async (req,res)=>{
     try{
         const course = await Course.create(req.body);
         //set response with 201 status code and location of /api/courses/{course_id}
-        res.status(201).location(`/api/courses/${course.id}`).end();
+        
+        res.status(201).append('Access-Control-Expose-Headers', 'Location').location(`/api/courses/${course.id}`).end();
     } catch (error){
         // Validation error and Unique Constraints
         if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
