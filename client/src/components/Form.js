@@ -1,5 +1,6 @@
 import React from 'react';
 
+// Form component 
 const Form = (props) => {
   const {
     cancel,
