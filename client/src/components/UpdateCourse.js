@@ -45,6 +45,9 @@ const UpdateCourse = (props) => {
                 setEstimatedTime(course.estimatedTime);
                 setMaterialsNeeded(course.materialsNeeded);
             })
+            .catch(() => {
+                history.push("/error");
+            });
     },[id,userId,history]);
 
     // On form field change event handler 
