@@ -1,7 +1,12 @@
 import React from 'react';
 const UnhandledError = () => {
     return (
-        <p>500 Internal Server Error</p>
+        <main>
+        <div className="wrap">
+            <h2>Error</h2>
+            <p>Sorry! We just encountered an unexpected error.</p>
+        </div>
+    </main>
     )
 };
 
