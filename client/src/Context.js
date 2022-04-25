@@ -11,6 +11,7 @@ export class Provider extends Component {
   constructor() {
     super();
     this.data = new Data();
+    // EXCEEDS with Cookies to store authenticatedUser and credentials
     this.authCookie = Cookies.get('authenticatedUser');
     this.credentialCookie = Cookies.get('credential');
     this.state = {
@@ -40,9 +41,12 @@ export class Provider extends Component {
     );
   }
 
-  
+  // Sign In action 
   signIn = async (emailAddress, password) => {
+    // Calls Rest API to authenticate User
     const user = await this.data.getUser(emailAddress, password);
+
+    // If User found update the authenticatedUser and credential state
     if (user !== null){
       this.setState(()=>{
         return {
@@ -50,19 +54,23 @@ export class Provider extends Component {
           credential:{emailAddress, password},
         };
       });
+      // EXCEED add to cookies
       Cookies.set('authenticatedUser', JSON.stringify(user),{expires:1}); //cookie expires in 1 day
       Cookies.set('credential', JSON.stringify({emailAddress,password}), {expires:1})
     }
     return user;
   }
 
+  // On Sign Out from context.actions
   signOut = () => {
+    // Update the authenticatedUser and credential states to null
     this.setState(()=>{
       return {
         authenticatedUser: null,
         credential:null
       }
     });
+    //EXCEED remove the cookies
     Cookies.remove('authenticatedUser');
     Cookies.remove('credential');
   }
