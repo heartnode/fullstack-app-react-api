@@ -14,10 +14,13 @@ const UpdateCourse = (props) => {
     // Get credential and author information from context
     const context = useContext(Context);
     const { credential } = context;
-    const { firstName, lastName } = context.authenticatedUser;
+    const { firstName, lastName, userId } = context.authenticatedUser;
 
     // Get Course ID from path parameter
     const { id } = props.match.params;
+    
+    // Get the history function from props
+    const { history } = props;
 
     // useEffect hook to retrive data from Rest API
     useEffect(()=>{
@@ -25,13 +28,18 @@ const UpdateCourse = (props) => {
         const data = new Data();
         data.getCourseDetail(id)
             .then((course) => {
+
+                // If the Author is not the same as authenticated user show forbidden
+                if (userId !== course.userId ){
+                    history.push('/forbidden');
+                }
                 // Update title, description, estimatedTime, and MaterialsNeeded states
                 setTitle(course.title);
                 setDescription(course.description);
                 setEstimatedTime(course.estimatedTime);
                 setMaterialsNeeded(course.materialsNeeded);
             })
-    },[id,]);
+    },[id,userId,history]);
 
     // On form field change event handler 
     const  change = (event) => {
