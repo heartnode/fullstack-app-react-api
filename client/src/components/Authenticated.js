@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default () => {
+const Authenticated = () => {
   return (
   <div className="bounds">
     <div className="grid-100">
@@ -9,3 +9,5 @@ export default () => {
   </div>
   );
 }
+
+export default Authenticated;
