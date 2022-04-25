@@ -16,7 +16,7 @@ const UpdateCourse = (props) => {
     const { credential } = context;
     const { firstName, lastName } = context.authenticatedUser;
     const userId = context.authenticatedUser.id;
-    
+
     // Get Course ID from path parameter
     const { id } = props.match.params;
     
@@ -29,10 +29,15 @@ const UpdateCourse = (props) => {
         const data = new Data();
         data.getCourseDetail(id)
             .then((course) => {
-
+                // If course is not found send to not found
+                if (course === null){
+                    history.push('/notfound');
+                    return;
+                }
                 // If the Author is not the same as authenticated user show forbidden
                 if (userId !== course.userId ){
                     history.push('/forbidden');
+                    return;
                 }
                 // Update title, description, estimatedTime, and MaterialsNeeded states
                 setTitle(course.title);
